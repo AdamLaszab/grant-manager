@@ -6,6 +6,7 @@ import sk.stuba.fei.uim.oop.entity.grant.ProjectInterface;
 import sk.stuba.fei.uim.oop.entity.organization.OrganizationInterface;
 import sk.stuba.fei.uim.oop.entity.people.PersonInterface;
 
+import sk.stuba.fei.uim.oop.entity.grant.Agency;
 import java.util.LinkedList;
 
 public class DataFactory {
@@ -13,7 +14,7 @@ public class DataFactory {
     public static LinkedList<AgencyInterface> getAgencies(int count) {
         LinkedList<AgencyInterface> retVal = new LinkedList<>();
         for (int i = 0; i < count; i++) {
-          AgencyInterface agency = new <AgencyImplementation>();
+          AgencyInterface agency = new Agency();
           retVal.add(agency);
         }
         return retVal;
