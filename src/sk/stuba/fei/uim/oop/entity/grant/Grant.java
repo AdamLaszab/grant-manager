@@ -1,7 +1,6 @@
 package sk.stuba.fei.uim.oop.entity.grant;
 import java.util.Set;
 
-import sk.stuba.fei.uim.oop.entity.organization.OrganizationInterface;
 import sk.stuba.fei.uim.oop.entity.people.PersonInterface;
 import sk.stuba.fei.uim.oop.utility.Constants;
 import java.util.LinkedHashSet;
@@ -106,7 +105,7 @@ public class Grant implements GrantInterface {
             if(overlapingPeople.containsKey(employee)){
                 if(project.getApplicant().getEmploymentForEmployee(employee)+overlapingPeople.get(employee)>Constants.MAX_EMPLOYMENT_PER_AGENCY){
                    passed.remove(project); 
-                    failed.add(project);
+                   failed.add(project);
                 }
             }else{
 
@@ -124,19 +123,24 @@ public class Grant implements GrantInterface {
             }
         }
         int numberOfPassed;
+        int moneyPerPassed;
         if(passed.size()==1){
             numberOfPassed = passed.size();
         }else{      
         numberOfPassed = passed.size()/2;
         }
-        int moneyPerPassed = budget/numberOfPassed;
+        if(passed.size()!=0){
+        moneyPerPassed = budget/numberOfPassed;
+        }else{
+            moneyPerPassed=0;
+        }
         for(ProjectInterface project : passed){
             if(numberOfPassed>0){
                 project.getApplicant().registerProjectInOrganization(project);
                 evaluated.put(project,moneyPerPassed);
                 int moneyPerYear = moneyPerPassed/Constants.PROJECT_DURATION_IN_YEARS;
                 for(int i=0;i<Constants.PROJECT_DURATION_IN_YEARS;i++){
-                    project.getApplicant().projectBudgetUpdateNotification(project,this.year+1, moneyPerYear);
+                    project.getApplicant().projectBudgetUpdateNotification(project,this.year+i, moneyPerYear);
                 }
                 remainingBudget-=moneyPerPassed;
                 numberOfPassed--;
@@ -147,6 +151,6 @@ public class Grant implements GrantInterface {
                } 
             }
         }
-        
+
     }
 }
