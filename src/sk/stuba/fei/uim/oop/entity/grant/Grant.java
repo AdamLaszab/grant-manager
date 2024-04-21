@@ -15,6 +15,8 @@ public class Grant implements GrantInterface {
     private int remainingBudget;
     private GrantState state;
     private Set<ProjectInterface> projects=new LinkedHashSet<ProjectInterface>();
+    private Set<ProjectInterface> passed = new LinkedHashSet<>();
+    private Set<ProjectInterface> failed = new LinkedHashSet<>();
     private HashMap<ProjectInterface,Integer> evaluated = new HashMap<>();
     
     public String getIdentifier(){
@@ -73,12 +75,78 @@ public class Grant implements GrantInterface {
     }
     public void evaluateProjects(){
        this.state = GrantState.EVALUATING;
-        HashSet<GrantInterface> runningGrants = new HashSet<>(); 
-       runningGrants.addAll(this.agency.getAllGrants());
-        
+        HashSet<GrantInterface> allGrants = new HashSet<>(); 
+       allGrants.addAll(this.agency.getAllGrants());
+       HashSet<GrantInterface> runningGrants = new HashSet<>();
+       for(GrantInterface grant : allGrants){
+            if(grant.getState()==GrantState.CLOSED){
+                runningGrants.add(grant);
+            }
+       }
+       HashSet<ProjectInterface> runningProjects = new HashSet<>();
+       for(GrantInterface grant: runningGrants){
+            for(ProjectInterface project : grant.getRegisteredProjects()){
+                if(project.getBudgetForYear(grant.getYear())>0){
+                    runningProjects.add(project);
+                }
+            }            
+       }
+       HashMap<PersonInterface,Integer> overlapingPeople = new HashMap<>();
+       for(ProjectInterface project : runningProjects){
+            if(project.getBudgetForYear(this.year)>0){
+                for(PersonInterface person : project.getAllParticipants()){
+                overlapingPeople.put(person,project.getApplicant().getEmploymentForEmployee(person));
+                }
+            }
+       }
+       
+       for(ProjectInterface project : this.projects){
+        passed.add(project);
+        for(PersonInterface employee : project.getAllParticipants()){
+            if(overlapingPeople.containsKey(employee)){
+                if(project.getApplicant().getEmploymentForEmployee(employee)+overlapingPeople.get(employee)>Constants.MAX_EMPLOYMENT_PER_AGENCY){
+                   passed.remove(project); 
+                    failed.add(project);
+                }
+            }else{
+
+            }
+        }
+       }
     }
 
     public void closeGrant(){
-
+        this.state=GrantState.CLOSED;
+        for(ProjectInterface project : failed){
+            for(int i=0;i<Constants.PROJECT_DURATION_IN_YEARS;i++){
+                evaluated.put(project,0);
+                project.getApplicant().projectBudgetUpdateNotification(project,this.year+i, 0);
+            }
+        }
+        int numberOfPassed;
+        if(passed.size()==1){
+            numberOfPassed = passed.size();
+        }else{      
+        numberOfPassed = passed.size()/2;
+        }
+        int moneyPerPassed = budget/numberOfPassed;
+        for(ProjectInterface project : passed){
+            if(numberOfPassed>0){
+                project.getApplicant().registerProjectInOrganization(project);
+                evaluated.put(project,moneyPerPassed);
+                int moneyPerYear = moneyPerPassed/Constants.PROJECT_DURATION_IN_YEARS;
+                for(int i=0;i<Constants.PROJECT_DURATION_IN_YEARS;i++){
+                    project.getApplicant().projectBudgetUpdateNotification(project,this.year+1, moneyPerYear);
+                }
+                remainingBudget-=moneyPerPassed;
+                numberOfPassed--;
+            }else{
+                evaluated.put(project,0);
+               for(int i=0;i<Constants.PROJECT_DURATION_IN_YEARS;i++){
+                project.getApplicant().projectBudgetUpdateNotification(project,this.year+i, 0);
+               } 
+            }
+        }
+        
     }
 }

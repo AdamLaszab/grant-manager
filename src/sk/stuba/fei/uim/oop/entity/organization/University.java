@@ -55,10 +55,6 @@ public class University implements OrganizationInterface{
         return sum;
    }
    public void projectBudgetUpdateNotification(ProjectInterface pi,int year,int budgetForYear){
-        if(budgetForYear==0){
-
-        }else{
             pi.setBudgetForYear(year, budgetForYear);
-        }
    }
 }

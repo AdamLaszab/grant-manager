@@ -62,7 +62,7 @@ public class Company implements OrganizationInterface{
    }
    public void projectBudgetUpdateNotification(ProjectInterface pi,int year,int budgetForYear){
         if(budgetForYear==0){
-
+            pi.setBudgetForYear(year, budgetForYear);
         }else{
             if(this.getBudget()>=budgetForYear){
             pi.setBudgetForYear(year, budgetForYear*2);

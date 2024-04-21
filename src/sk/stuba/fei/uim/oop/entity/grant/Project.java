@@ -49,6 +49,9 @@ public class Project implements ProjectInterface{
         yearToBudget.put(year,budget);
     }
     public int getBudgetForYear(int year){
+        if(yearToBudget.get(year)==null){
+            return 0;
+        }
         return yearToBudget.get(year);
     }
     public int getTotalBudget(){
