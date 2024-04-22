@@ -112,14 +112,9 @@ public class Grant implements GrantInterface {
             }
         }
        }
-    }
-
-    public void closeGrant(){
-        this.state=GrantState.CLOSED;
-        for(ProjectInterface project : failed){
+       for(ProjectInterface project : failed){
             for(int i=0;i<Constants.PROJECT_DURATION_IN_YEARS;i++){
                 evaluated.put(project,0);
-                project.getApplicant().projectBudgetUpdateNotification(project,this.year+i, 0);
             }
         }
         int numberOfPassed;
@@ -136,19 +131,25 @@ public class Grant implements GrantInterface {
         }
         for(ProjectInterface project : passed){
             if(numberOfPassed>0){
-                project.getApplicant().registerProjectInOrganization(project);
                 evaluated.put(project,moneyPerPassed);
-                int moneyPerYear = moneyPerPassed/Constants.PROJECT_DURATION_IN_YEARS;
-                for(int i=0;i<Constants.PROJECT_DURATION_IN_YEARS;i++){
-                    project.getApplicant().projectBudgetUpdateNotification(project,this.year+i, moneyPerYear);
-                }
                 remainingBudget-=moneyPerPassed;
                 numberOfPassed--;
             }else{
                 evaluated.put(project,0);
-               for(int i=0;i<Constants.PROJECT_DURATION_IN_YEARS;i++){
-                project.getApplicant().projectBudgetUpdateNotification(project,this.year+i, 0);
-               } 
+            }
+        }
+    }
+
+    public void closeGrant(){
+        this.state=GrantState.CLOSED;
+        for(ProjectInterface project : evaluated.keySet()){
+            int assigned = evaluated.get(project);
+            int perYear = assigned/Constants.PROJECT_DURATION_IN_YEARS;
+            if( assigned >0){
+                project.getApplicant().registerProjectInOrganization(project);
+            }
+            for(int i=0;i<Constants.PROJECT_DURATION_IN_YEARS;i++){
+                project.getApplicant().projectBudgetUpdateNotification(project,this.year+i, perYear);
             }
         }
 
