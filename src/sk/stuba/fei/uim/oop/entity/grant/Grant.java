@@ -94,7 +94,20 @@ public class Grant implements GrantInterface {
        for(ProjectInterface project : runningProjects){
             if(project.getBudgetForYear(this.year)>0){
                 for(PersonInterface person : project.getAllParticipants()){
+                    if(overlapingPeople.get(person)==null){
                 overlapingPeople.put(person,project.getApplicant().getEmploymentForEmployee(person));
+                    }else if(overlapingPeople.get(person)<project.getApplicant().getEmploymentForEmployee(person)){
+                        overlapingPeople.put(person,project.getApplicant().getEmploymentForEmployee(person));
+                    }
+                }
+            }
+            if(project.getBudgetForYear(this.year+(Constants.PROJECT_DURATION_IN_YEARS-1))>0){
+                for(PersonInterface person : project.getAllParticipants()){
+                    if(overlapingPeople.get(person)==null){
+                overlapingPeople.put(person,project.getApplicant().getEmploymentForEmployee(person));
+                    }else if(overlapingPeople.get(person)<project.getApplicant().getEmploymentForEmployee(person)){
+                        overlapingPeople.put(person,project.getApplicant().getEmploymentForEmployee(person));
+                    }
                 }
             }
        }

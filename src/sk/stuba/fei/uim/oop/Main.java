@@ -47,6 +47,7 @@ public class Main {
         Anna.addEmployer(ESET);
         Karol.addEmployer(ESET);
 
+        
         AgencyInterface APVV = new Agency();
         AgencyInterface VEGA = new Agency();
         GrantInterface grant1 = new Grant();
@@ -83,26 +84,30 @@ public class Main {
         System.out.println(P2.getTotalBudget());
         System.out.println(P1.getBudgetForYear(2022));
         System.out.println(P2.getBudgetForYear(2023));
+        System.out.println("ENDING YEAR"+P1.getEndingYear());
+        System.out.println("ENDING YEAR"+P2.getEndingYear());
         System.out.println(grant1.getBudgetForProject(P1));
         System.out.println(grant2.getBudgetForProject(P2));
         System.out.println("STU PROJECT: " + STU.getProjectBudget(P1));
         System.out.println("UK PROJECT: " + UK.getProjectBudget(P2));
 
+
         GrantInterface grant3 = new Grant();
         grant3.setAgency(APVV);
         grant3.setBudget(100000);
-        grant3.setYear(2024);
-        APVV.addGrant(grant3, 2024);
+        grant3.setYear(2018);
+        APVV.addGrant(grant3, 2018);
         ProjectInterface P3 = new Project();
         P3.setApplicant(ESET);
         P3.addParticipant(Peter);
-        P3.setStartingYear(2024);
+        P3.setStartingYear(2018);
         grant3.callForProjects();
         System.out.println(grant3.registerProject(P3));
         grant3.evaluateProjects();
         grant3.closeGrant();
+        System.out.println(APVV.getAllGrants());
         System.out.println(P3.getTotalBudget());
-        System.out.println(P3.getBudgetForYear(2024));
+        System.out.println(P3.getBudgetForYear(2018));
         System.out.println(grant3.getBudgetForProject(P3));
         System.out.println("ESET PROJECT: " + ESET.getProjectBudget(P3));
 
@@ -153,5 +158,7 @@ public class Main {
         System.out.println("ESET CELKOVO:" + ESET.getBudgetForAllProjects());
         System.out.println("STU CELKOVO:" + STU.getBudgetForAllProjects());
         System.out.println("UK CELKOVO:" + UK.getBudgetForAllProjects());
+
+         
     }
 }
