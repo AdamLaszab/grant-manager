@@ -6,6 +6,8 @@ import sk.stuba.fei.uim.oop.utility.Constants;
 import java.util.LinkedHashSet;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Arrays;
 public class Grant implements GrantInterface {
     private String identifier;
     private int year;
@@ -85,41 +87,46 @@ public class Grant implements GrantInterface {
        HashSet<ProjectInterface> runningProjects = new HashSet<>();
        for(GrantInterface grant: runningGrants){
             for(ProjectInterface project : grant.getRegisteredProjects()){
-                if(project.getBudgetForYear(grant.getYear())>0){
+                if(project.getBudgetForYear(this.year)>0 || project.getBudgetForYear((this.year)+(Constants.PROJECT_DURATION_IN_YEARS-1))>0){
                     runningProjects.add(project);
                 }
             }            
        }
-       HashMap<PersonInterface,Integer> overlapingPeople = new HashMap<>();
+       HashMap<PersonInterface,ArrayList<Integer>> overlapingPeople = new HashMap<>();
        for(ProjectInterface project : runningProjects){
-            if(project.getBudgetForYear(this.year)>0){
-                for(PersonInterface person : project.getAllParticipants()){
-                    if(overlapingPeople.get(person)==null){
-                overlapingPeople.put(person,project.getApplicant().getEmploymentForEmployee(person));
-                    }else if(overlapingPeople.get(person)<project.getApplicant().getEmploymentForEmployee(person)){
-                        overlapingPeople.put(person,project.getApplicant().getEmploymentForEmployee(person));
-                    }
+        for(int i=0;i<Constants.PROJECT_DURATION_IN_YEARS;i++){
+            for(PersonInterface person : project.getAllParticipants()){
+            if(project.getBudgetForYear(this.year+i)>0){
+                if(overlapingPeople.containsKey(person) == false){
+                    ArrayList<Integer> newList = new ArrayList<>();
+                    newList.addAll(Arrays.asList(0,0,0,0));
+                    newList.set(i,newList.get(i)+project.getApplicant().getEmploymentForEmployee(person));
+                    overlapingPeople.put(person,newList);
+                }else{
+                    overlapingPeople.get(person).set(i,overlapingPeople.get(person).get(i)+project.getApplicant().getEmploymentForEmployee(person));
                 }
+            }else{
+               if(overlapingPeople.containsKey(person)==false){
+                ArrayList<Integer> newList = new ArrayList<>();
+                newList.addAll(Arrays.asList(0,0,0,0));
+                overlapingPeople.put(person,newList);
+               }
             }
-            if(project.getBudgetForYear(this.year+(Constants.PROJECT_DURATION_IN_YEARS-1))>0){
-                for(PersonInterface person : project.getAllParticipants()){
-                    if(overlapingPeople.get(person)==null){
-                overlapingPeople.put(person,project.getApplicant().getEmploymentForEmployee(person));
-                    }else if(overlapingPeople.get(person)<project.getApplicant().getEmploymentForEmployee(person)){
-                        overlapingPeople.put(person,project.getApplicant().getEmploymentForEmployee(person));
-                    }
-                }
-            }
+        }
+         }
        }
-       
+       System.out.println(overlapingPeople);
        for(ProjectInterface project : this.projects){
         passed.add(project);
         for(PersonInterface employee : project.getAllParticipants()){
             if(overlapingPeople.containsKey(employee)){
-                if(project.getApplicant().getEmploymentForEmployee(employee)+overlapingPeople.get(employee)>Constants.MAX_EMPLOYMENT_PER_AGENCY){
-                   passed.remove(project); 
-                   failed.add(project);
-                }
+                 for(int i=0;i<Constants.PROJECT_DURATION_IN_YEARS;i++){
+                        if((overlapingPeople.get(employee).get(i)+project.getApplicant().getEmploymentForEmployee(employee))>Constants.MAX_EMPLOYMENT_PER_AGENCY){
+                            passed.remove(project);
+                            failed.add(project);
+                            break;
+                        }
+                 }
             }else{
 
             }
