@@ -16,8 +16,6 @@ public class Grant implements GrantInterface {
     private int remainingBudget;
     private GrantState state;
     private Set<ProjectInterface> projects=new LinkedHashSet<ProjectInterface>();
-    private Set<ProjectInterface> passed = new LinkedHashSet<>();
-    private Set<ProjectInterface> failed = new LinkedHashSet<>();
     private HashMap<ProjectInterface,Integer> evaluated = new HashMap<>();
     
     public String getIdentifier(){
@@ -55,7 +53,9 @@ public class Grant implements GrantInterface {
         return this.state;
     }
     public void callForProjects(){
+        if(this.state == null){
         this.state=GrantState.STARTED;
+        }
     }
     public boolean registerProject(ProjectInterface project){
         if(this.state==GrantState.STARTED){
@@ -75,7 +75,10 @@ public class Grant implements GrantInterface {
         return this.evaluated.get(project);
     }
     public void evaluateProjects(){
+        if(this.state == GrantState.STARTED){
        this.state = GrantState.EVALUATING;
+       Set<ProjectInterface> passed = new LinkedHashSet<>();
+       Set<ProjectInterface> failed = new LinkedHashSet<>();
         HashSet<GrantInterface> allGrants = new HashSet<>(); 
        allGrants.addAll(this.agency.getAllGrants());
        HashSet<GrantInterface> runningGrants = new HashSet<>();
@@ -115,7 +118,6 @@ public class Grant implements GrantInterface {
         }
          }
        }
-       System.out.println(overlapingPeople);
        for(ProjectInterface project : this.projects){
         passed.add(project);
         for(PersonInterface employee : project.getAllParticipants()){
@@ -127,8 +129,6 @@ public class Grant implements GrantInterface {
                             break;
                         }
                  }
-            }else{
-
             }
         }
        }
@@ -159,19 +159,18 @@ public class Grant implements GrantInterface {
             }
         }
     }
+    }
 
     public void closeGrant(){
+        if(this.state == GrantState.EVALUATING){
         this.state=GrantState.CLOSED;
         for(ProjectInterface project : evaluated.keySet()){
             int assigned = evaluated.get(project);
             int perYear = assigned/Constants.PROJECT_DURATION_IN_YEARS;
-            if( assigned >0){
-                project.getApplicant().registerProjectInOrganization(project);
-            }
             for(int i=0;i<Constants.PROJECT_DURATION_IN_YEARS;i++){
-                project.getApplicant().projectBudgetUpdateNotification(project,this.year+i, perYear);
+                project.setBudgetForYear(this.year+i, perYear);
             }
         }
-
+    }
     }
 }
