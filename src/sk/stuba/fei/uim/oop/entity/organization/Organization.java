@@ -43,7 +43,11 @@ public abstract class Organization implements OrganizationInterface {
     return this.projects;
    }
    public int getProjectBudget(ProjectInterface pi){
+    if(projects.contains(pi)==true){
         return pi.getTotalBudget();
+    }else{
+        return 0;
+    }
    }
    public int getBudgetForAllProjects(){
     int sum=0;    

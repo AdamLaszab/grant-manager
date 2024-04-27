@@ -46,12 +46,8 @@ public class Project implements ProjectInterface{
         return this.participants;
     }
     public void setBudgetForYear(int year,int budget){
-        if(yearToBudget.containsKey(year)==true){
-        yearToBudget.put(year,budget);
-        }else{
             yearToBudget.put(year,budget);
             this.applicant.projectBudgetUpdateNotification(this, year, budget);
-        }
     }
     public int getBudgetForYear(int year){
         if(yearToBudget.get(year)==null){

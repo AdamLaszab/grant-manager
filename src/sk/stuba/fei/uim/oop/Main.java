@@ -112,7 +112,7 @@ public class Main {
         System.out.println(P3.getTotalBudget());
         System.out.println(P3.getBudgetForYear(2020));
         System.out.println(grant3.getBudgetForProject(P3));
-        System.out.println("ESET PROJECT: " + ESET.getProjectBudget(P3));
+        System.out.println("STU PROJECT: " + STU.getProjectBudget(P3));
 
         GrantInterface grantX = new Grant();
         grantX.setAgency(APVV);
@@ -174,6 +174,7 @@ public class Main {
         System.out.println(P7.getTotalBudget());
         System.out.println(P4.getBudgetForYear(2024));
         System.out.println(grant4.getBudgetForProject(P4));
+        System.out.println(P4.getTotalBudget());
         System.out.println("ESET PROJECT: "+ ESET.getProjectBudget(P4));
         System.out.println(P5.getBudgetForYear(2024));
         System.out.println(grant4.getBudgetForProject(P5));

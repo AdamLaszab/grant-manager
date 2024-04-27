@@ -13,8 +13,10 @@ public class Agency implements AgencyInterface {
         this.name=name;
     }
     public void addGrant(GrantInterface gi, int year){
+        if(year>=1000 && year<=9999){
         gi.setYear(year);
         grants.add(gi);
+        }
     }
     public Set<GrantInterface> getAllGrants(){
         return this.grants;

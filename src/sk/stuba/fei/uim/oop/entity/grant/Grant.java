@@ -7,7 +7,6 @@ import java.util.LinkedHashSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.ArrayList;
-import java.util.Arrays;
 public class Grant implements GrantInterface {
     private String identifier;
     private int year;
@@ -102,7 +101,9 @@ public class Grant implements GrantInterface {
             if(project.getBudgetForYear(this.year+i)>0){
                 if(overlapingPeople.containsKey(person) == false){
                     ArrayList<Integer> newList = new ArrayList<>();
-                    newList.addAll(Arrays.asList(0,0,0,0));
+                    for (int j = 0; j < Constants.PROJECT_DURATION_IN_YEARS; j++) {
+                        newList.add(0);
+                    }
                     newList.set(i,newList.get(i)+project.getApplicant().getEmploymentForEmployee(person));
                     overlapingPeople.put(person,newList);
                 }else{
@@ -111,7 +112,9 @@ public class Grant implements GrantInterface {
             }else{
                if(overlapingPeople.containsKey(person)==false){
                 ArrayList<Integer> newList = new ArrayList<>();
-                newList.addAll(Arrays.asList(0,0,0,0));
+                for (int j = 0; j < Constants.PROJECT_DURATION_IN_YEARS; j++) {
+                        newList.add(0);
+                }
                 overlapingPeople.put(person,newList);
                }
             }
