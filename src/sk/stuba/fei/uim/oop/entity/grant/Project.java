@@ -3,6 +3,7 @@ package sk.stuba.fei.uim.oop.entity.grant;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Objects;
 import sk.stuba.fei.uim.oop.entity.organization.OrganizationInterface;
 import sk.stuba.fei.uim.oop.entity.people.PersonInterface;
 import sk.stuba.fei.uim.oop.utility.Constants;
@@ -10,8 +11,14 @@ public class Project implements ProjectInterface{
     private String projectName;
     private int startingYear;
     private OrganizationInterface applicant;
-    private Set<PersonInterface> participants=new HashSet<>();
-    private HashMap<Integer,Integer> yearToBudget= new HashMap<>();
+    private Set<PersonInterface> participants;
+    private HashMap<Integer,Integer> yearToBudget;
+    
+    public Project(){
+        this.participants=new HashSet<PersonInterface>();
+        this.yearToBudget=new HashMap<Integer,Integer>();
+    }
+
     public String getProjectName(){
         return this.projectName;
     }
@@ -22,7 +29,9 @@ public class Project implements ProjectInterface{
         return this.startingYear;
     }
     public void setStartingYear(int year){
+        if(year>=1000 && year<=9999){
         this.startingYear = year;
+        }
     }
     public int getEndingYear(){
         return this.startingYear+(Constants.PROJECT_DURATION_IN_YEARS-1);
@@ -37,7 +46,7 @@ public class Project implements ProjectInterface{
 
     public void addParticipant(PersonInterface participant){
         if (this.applicant!=null){
-            if(participant.getEmployers().contains(applicant)){
+            if(participant.getEmployers().contains(applicant) && applicant.getEmployees().contains(participant)){
                 participants.add(participant);
             }
         }        
@@ -54,6 +63,7 @@ public class Project implements ProjectInterface{
             return 0;
         }
         return yearToBudget.get(year);
+        
     }
     public int getTotalBudget(){
         int sum=0;
@@ -61,6 +71,17 @@ public class Project implements ProjectInterface{
             sum += value;
         }
         return sum;
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Project project = (Project) obj;
+        return Objects.equals(projectName, project.projectName);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(projectName);
     }
 
 }

@@ -2,10 +2,14 @@ package sk.stuba.fei.uim.oop.entity.grant;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Objects;
 public class Agency implements AgencyInterface {
     private String name;
-    private Set<GrantInterface> grants= new HashSet<GrantInterface>();
+    private Set<GrantInterface> grants;
 
+    public Agency(){
+        this.grants = new HashSet<GrantInterface>();
+    }
     public String getName(){
         return this.name;
     }
@@ -31,6 +35,17 @@ public class Agency implements AgencyInterface {
         }
 
         return grantsIssuedInYear;
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Agency agency = (Agency) obj;
+        return Objects.equals(name, agency.name);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
     
 }

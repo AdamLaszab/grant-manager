@@ -7,8 +7,13 @@ import sk.stuba.fei.uim.oop.entity.grant.ProjectInterface;
 import java.util.HashMap;
 import java.util.ArrayList;
 public class Company extends Organization{
-   private int budget = Constants.COMPANY_INIT_OWN_RESOURCES;
-   private HashMap<ProjectInterface,ArrayList<Integer>> projectToList = new HashMap<>();
+   private int budget;
+   private HashMap<ProjectInterface,ArrayList<Integer>> projectToList;
+   public Company(){
+     super();
+     this.budget= Constants.COMPANY_INIT_OWN_RESOURCES;
+     this.projectToList = new HashMap<ProjectInterface,ArrayList<Integer>>();
+   }
    public void projectBudgetUpdateNotification(ProjectInterface pi,int year,int budgetForYear){
         if(projectToList.containsKey(pi)==false){
             ArrayList<Integer> newList = new ArrayList<>();

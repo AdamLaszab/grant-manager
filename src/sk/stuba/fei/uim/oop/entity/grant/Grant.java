@@ -7,6 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.ArrayList;
+import java.util.Objects;
 public class Grant implements GrantInterface {
     private String identifier;
     private int year;
@@ -14,9 +15,13 @@ public class Grant implements GrantInterface {
     private int budget;
     private int remainingBudget;
     private GrantState state;
-    private Set<ProjectInterface> projects=new LinkedHashSet<ProjectInterface>();
-    private HashMap<ProjectInterface,Integer> evaluated = new HashMap<>();
+    private Set<ProjectInterface> projects;
+    private HashMap<ProjectInterface,Integer> evaluated;
     
+    public Grant(){
+        this.projects = new LinkedHashSet<ProjectInterface>();
+        this.evaluated = new HashMap<ProjectInterface,Integer>();
+    }
     public String getIdentifier(){
         return this.identifier;
     }
@@ -27,7 +32,9 @@ public class Grant implements GrantInterface {
         return this.year;
     }
     public void setYear(int year){
+        if(year>=1000 && year<=9999){
         this.year=year;
+        }
     }
     public AgencyInterface getAgency(){
         return this.agency;
@@ -44,9 +51,6 @@ public class Grant implements GrantInterface {
     }
     public int getRemainingBudget(){
         return this.remainingBudget;
-    }
-    public void setRemainingBudget(int budget){
-        this.remainingBudget=budget;
     }
     public GrantState getState(){
         return this.state;
@@ -140,23 +144,23 @@ public class Grant implements GrantInterface {
                 evaluated.put(project,0);
             }
         }
-        int numberOfPassed;
-        int moneyPerPassed;
+        int numberOfFunded;
+        int moneyPerFunded;
         if(passed.size()==1){
-            numberOfPassed = passed.size();
+            numberOfFunded = passed.size();
         }else{      
-        numberOfPassed = passed.size()/2;
+        numberOfFunded = passed.size()/2;
         }
         if(passed.size()!=0){
-        moneyPerPassed = budget/numberOfPassed;
+        moneyPerFunded = budget/numberOfFunded;
         }else{
-            moneyPerPassed=0;
+            moneyPerFunded=0;
         }
         for(ProjectInterface project : passed){
-            if(numberOfPassed>0){
-                evaluated.put(project,moneyPerPassed);
-                remainingBudget-=moneyPerPassed;
-                numberOfPassed--;
+            if(numberOfFunded>0){
+                evaluated.put(project,moneyPerFunded);
+                remainingBudget-=moneyPerFunded;
+                numberOfFunded--;
             }else{
                 evaluated.put(project,0);
             }
@@ -175,5 +179,16 @@ public class Grant implements GrantInterface {
             }
         }
     }
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Grant grant = (Grant) obj;
+        return Objects.equals(identifier, grant.identifier);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(identifier);
     }
 }

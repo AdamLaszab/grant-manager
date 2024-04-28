@@ -5,11 +5,16 @@ import java.util.HashSet;
 import sk.stuba.fei.uim.oop.entity.grant.ProjectInterface;
 import sk.stuba.fei.uim.oop.entity.people.PersonInterface;
 import java.util.HashMap;
-
+import java.util.Objects;
 public abstract class Organization implements OrganizationInterface {
     private String name;
-   private HashMap<PersonInterface,Integer> employeesToEmployment = new HashMap<>();
-   private Set<ProjectInterface> projects= new HashSet<ProjectInterface>();
+   private HashMap<PersonInterface,Integer> employeesToEmployment;
+   private Set<ProjectInterface> projects;
+   public Organization(){
+    this.employeesToEmployment = new HashMap<PersonInterface,Integer>();
+    this.projects= new HashSet<ProjectInterface>();
+   }
+   
    public String getName(){
     return this.name;
    }
@@ -43,7 +48,7 @@ public abstract class Organization implements OrganizationInterface {
     return this.projects;
    }
    public int getProjectBudget(ProjectInterface pi){
-    if(projects.contains(pi)==true){
+    if(this.projects.contains(pi)==true){
         return pi.getTotalBudget();
     }else{
         return 0;
@@ -57,7 +62,18 @@ public abstract class Organization implements OrganizationInterface {
         return sum;
    }
    abstract public void projectBudgetUpdateNotification(ProjectInterface pi,int year,int budgetForYear);
-            
+   
+   @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass().getSuperclass() != obj.getClass().getSuperclass()) return false;
+        Organization organization = (Organization) obj;
+        return Objects.equals(name, organization.name);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
 }
     
 

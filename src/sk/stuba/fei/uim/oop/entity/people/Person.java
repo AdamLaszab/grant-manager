@@ -4,12 +4,15 @@ import sk.stuba.fei.uim.oop.entity.organization.*;
 
 import java.util.HashSet;
 import java.util.Set;
-
+import java.util.Objects;
 public class Person implements PersonInterface{
     private String name;
     private String address;
-    private Set<OrganizationInterface> employers= new HashSet<>();
+    private Set<OrganizationInterface> employers;
 
+    public Person(){
+        this.employers= new HashSet<OrganizationInterface>();
+    }
     public String getName(){
         return this.name;
         }
@@ -31,5 +34,17 @@ public class Person implements PersonInterface{
 
     public Set<OrganizationInterface> getEmployers(){
         return this.employers;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Person person = (Person) obj;
+        return Objects.equals(name, person.name);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

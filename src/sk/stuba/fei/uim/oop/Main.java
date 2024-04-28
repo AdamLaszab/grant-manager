@@ -11,18 +11,29 @@ import sk.stuba.fei.uim.oop.entity.organization.OrganizationInterface;
 import sk.stuba.fei.uim.oop.entity.organization.University;
 import sk.stuba.fei.uim.oop.entity.people.Person;
 import sk.stuba.fei.uim.oop.entity.people.PersonInterface;
+import sk.stuba.fei.uim.oop.utility.Constants;
 
 public class Main {
 
     public static void main(String[] args) {
+
+        Constants.PROJECT_DURATION_IN_YEARS = 10;
         OrganizationInterface STU = new University();
+        OrganizationInterface STU1 = new University();
         OrganizationInterface UK = new University();
         OrganizationInterface ESET = new Company();
 
         STU.setName("STU");
+        STU1.setName("STU");
         UK.setName("UK");
         ESET.setName("ESET");
         
+        System.out.println(STU.equals(ESET));
+        System.out.println(STU.equals(STU1));
+        System.out.println(STU.hashCode());
+        System.out.println(STU1.hashCode());
+
+
         PersonInterface Peter = new Person();
         PersonInterface Jozef = new Person();
         PersonInterface Anna = new Person();
@@ -50,10 +61,19 @@ public class Main {
         
         AgencyInterface APVV = new Agency();
         AgencyInterface VEGA = new Agency();
+        AgencyInterface VEGA1 = new Agency();
         GrantInterface grant1 = new Grant();
         GrantInterface grant2 = new Grant();
         ProjectInterface P1 = new Project();
         ProjectInterface P2 = new Project();
+
+        VEGA.setName("VEGA");
+        VEGA1.setName("VEGA");
+
+        System.out.println(VEGA.equals(VEGA1));
+        System.out.println(VEGA.hashCode());
+        System.out.println(VEGA1.hashCode());
+
 
         grant1.setIdentifier("grant1");
         grant1.setBudget(100000);
@@ -63,16 +83,19 @@ public class Main {
         grant2.setAgency(VEGA);
         APVV.addGrant(grant1, 2022);
         VEGA.addGrant(grant2, 2023);
-
         P1.setApplicant(STU);
         P1.addParticipant(Peter);
         P1.addParticipant(Jozef);
         P1.setStartingYear(2022);
+        P1.setProjectName("P1");
         STU.registerProjectInOrganization(P1);
         P2.setApplicant(UK);
         P2.addParticipant(Karol);
         P2.addParticipant(Anna);
         P2.setStartingYear(2023);
+        P2.setProjectName("P2");
+        P1.setProjectName("P1");
+        P2.setProjectName("P2");
         UK.registerProjectInOrganization(P2);
         grant1.callForProjects();
         grant2.callForProjects();
@@ -103,6 +126,7 @@ public class Main {
         P3.setApplicant(STU);
         P3.addParticipant(Peter);
         P3.setStartingYear(2020);
+        P3.setProjectName("P3");
         STU.registerProjectInOrganization(P3);
         grant3.callForProjects();
         System.out.println(grant3.registerProject(P3));
@@ -123,6 +147,7 @@ public class Main {
         PX.setApplicant(STU);
         PX.addParticipant(Peter);
         PX.setStartingYear(2021);
+        PX.setProjectName("PX");
         STU.registerProjectInOrganization(PX);
         grantX.callForProjects();
         System.out.println(grantX.registerProject(PX));
@@ -133,7 +158,7 @@ public class Main {
         System.out.println(PX.getBudgetForYear(2021));
         System.out.println(grantX.getBudgetForProject(PX));
         System.out.println("ESET PROJECT: " + ESET.getProjectBudget(PX));
-
+        Constants.PROJECT_DURATION_IN_YEARS = 4;
         GrantInterface grant4 = new Grant();
         grant4.setAgency(VEGA);
         grant4.setBudget(8000);
@@ -144,23 +169,27 @@ public class Main {
         P4.addParticipant(Karol);
         P4.addParticipant(Anna);
         P4.setStartingYear(2024);
+        P4.setProjectName("P4");
         ESET.registerProjectInOrganization(P4);
         ProjectInterface P5 = new Project();
         P5.setApplicant(STU);
         P5.addParticipant(Peter);
         P5.addParticipant(Jozef);
         P5.setStartingYear(2024);
+        P5.setProjectName("P5");
         STU.registerProjectInOrganization(P5);
         ProjectInterface P6 = new Project();
         P6.setApplicant(UK);
         P6.addParticipant(Anna);
         P6.setStartingYear(2024);
+        P6.setProjectName("P6");
         UK.registerProjectInOrganization(P6);
         ProjectInterface P7 = new Project();
         P7.setApplicant(UK);
         P7.addParticipant(Karol);
         P7.setStartingYear(2024);
         UK.registerProjectInOrganization(P7);
+        P7.setProjectName("P7");
         grant4.callForProjects();
         System.out.println(grant4.registerProject(P4));
         System.out.println(grant4.registerProject(P5));
