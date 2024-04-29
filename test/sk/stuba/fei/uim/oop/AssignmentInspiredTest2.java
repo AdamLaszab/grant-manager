@@ -103,7 +103,6 @@ public class AssignmentInspiredTest2 {
 
     @Test
     void testAllProjectsPassed() {
-
         ProjectInterface P1 = projects.get(0);
         GrantInterface grant1 = grants.get(0);
         grant1.callForProjects();
@@ -132,12 +131,13 @@ public class AssignmentInspiredTest2 {
         System.out.println(P3.getTotalBudget());
         // the registered project must obtain 0 because Peter is overlapping
         assertEquals(0, grant3.getBudgetForProject(P3));
-
+        
+        
         ProjectInterface P4 = projects.get(3);
         ProjectInterface P5 = projects.get(4);
         ProjectInterface P6 = projects.get(5);
         ProjectInterface P7 = projects.get(6);
-
+        System.out.println(P4.getEndingYear());
         GrantInterface grant4 = grants.get(3);
 
         grant4.callForProjects();
@@ -263,6 +263,7 @@ public class AssignmentInspiredTest2 {
         gran.registerProject(pro2);
         gran.registerProject(pro3);
         gran.registerProject(pro4);
+        Constants.PROJECT_DURATION_IN_YEARS=1;
         gran.evaluateProjects();
         gran.closeGrant();
         // when budgetForProject/years will sometimes give float, but we round it down to the nearest integers

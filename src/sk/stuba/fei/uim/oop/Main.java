@@ -118,16 +118,16 @@ public class Main {
 
 
         GrantInterface grant3 = new Grant();
-        grant3.setAgency(APVV);
+        grant3.setAgency(VEGA);
         grant3.setBudget(100000);
         grant3.setYear(2020);
         APVV.addGrant(grant3, 2020);
         ProjectInterface P3 = new Project();
-        P3.setApplicant(STU);
+        P3.setApplicant(ESET);
         P3.addParticipant(Peter);
         P3.setStartingYear(2020);
         P3.setProjectName("P3");
-        STU.registerProjectInOrganization(P3);
+        ESET.registerProjectInOrganization(P3);
         grant3.callForProjects();
         System.out.println(grant3.registerProject(P3));
         grant3.evaluateProjects();
@@ -136,7 +136,7 @@ public class Main {
         System.out.println(P3.getTotalBudget());
         System.out.println(P3.getBudgetForYear(2020));
         System.out.println(grant3.getBudgetForProject(P3));
-        System.out.println("STU PROJECT: " + STU.getProjectBudget(P3));
+        System.out.println("STU PROJECT: " + ESET.getProjectBudget(P3));
 
         GrantInterface grantX = new Grant();
         grantX.setAgency(APVV);

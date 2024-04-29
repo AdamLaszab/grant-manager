@@ -39,8 +39,8 @@ public class Company extends Organization{
    public int getProjectBudget(ProjectInterface pi){
     if(super.getAllProjects().contains(pi)==true){
         int sum = pi.getTotalBudget();
-        for(int i=0;i<=(pi.getEndingYear()-pi.getStartingYear());i++){
-            sum+=projectToList.get(pi).get(i);
+        for(int number : projectToList.get(pi)){
+            sum+=number;
         }
         return sum;
     }else{
@@ -53,9 +53,9 @@ public class Company extends Organization{
         for(ProjectInterface project : super.getAllProjects()){
             sum+=project.getTotalBudget();
             if(projectToList.containsKey(project)==true){
-              for(int i=0;i<=(project.getEndingYear()-project.getStartingYear());i++){
-                    sum+=projectToList.get(project).get(i);
-                }  
+              for(int number: projectToList.get(project)){
+                sum+=number;
+              }
             }
         }
         return sum;

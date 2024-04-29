@@ -111,7 +111,6 @@ public class Grant implements GrantInterface {
             }            
        }
 
-       System.out.println(maxLength);
        HashMap<PersonInterface,ArrayList<Integer>> overlapingPeople = new HashMap<>();
        for(ProjectInterface project : runningProjects){
         for(int i=0;i<=maxLength;i++){
@@ -143,7 +142,7 @@ public class Grant implements GrantInterface {
         passed.add(project);
         for(PersonInterface employee : project.getAllParticipants()){
             if(overlapingPeople.containsKey(employee)){
-                 for(int i=0;i<=maxLength;i++){
+                 for(int i=0;i<=(project.getEndingYear()-project.getStartingYear());i++){
                         if((overlapingPeople.get(employee).get(i)+project.getApplicant().getEmploymentForEmployee(employee))>Constants.MAX_EMPLOYMENT_PER_AGENCY){
                             passed.remove(project);
                             failed.add(project);
@@ -153,6 +152,7 @@ public class Grant implements GrantInterface {
             }
         }
        }
+       System.out.println(overlapingPeople);
        for(ProjectInterface project : failed){
                 evaluated.put(project,0);
         }
