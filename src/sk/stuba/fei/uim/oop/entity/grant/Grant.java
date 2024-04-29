@@ -152,7 +152,6 @@ public class Grant implements GrantInterface {
             }
         }
        }
-       System.out.println(overlapingPeople);
        for(ProjectInterface project : failed){
                 evaluated.put(project,0);
         }

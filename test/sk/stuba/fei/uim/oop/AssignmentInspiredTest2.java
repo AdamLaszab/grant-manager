@@ -123,12 +123,10 @@ public class AssignmentInspiredTest2 {
 
         ProjectInterface P3 =  projects.get(2);
         GrantInterface grant3 = grants.get(2);
-        System.out.println(P3.getTotalBudget());
         grant3.callForProjects();
         grant3.registerProject(P3);
         grant3.evaluateProjects();
         grant3.closeGrant();
-        System.out.println(P3.getTotalBudget());
         // the registered project must obtain 0 because Peter is overlapping
         assertEquals(0, grant3.getBudgetForProject(P3));
         
@@ -137,7 +135,6 @@ public class AssignmentInspiredTest2 {
         ProjectInterface P5 = projects.get(4);
         ProjectInterface P6 = projects.get(5);
         ProjectInterface P7 = projects.get(6);
-        System.out.println(P4.getEndingYear());
         GrantInterface grant4 = grants.get(3);
 
         grant4.callForProjects();
