@@ -17,7 +17,7 @@ public class Company extends Organization{
    public void projectBudgetUpdateNotification(ProjectInterface pi,int year,int budgetForYear){
         if(projectToList.containsKey(pi)==false){
             ArrayList<Integer> newList = new ArrayList<>();
-            for (int i = 0; i < Constants.PROJECT_DURATION_IN_YEARS; i++) {
+            for (int i = 0; i<=(pi.getEndingYear()-pi.getStartingYear()); i++) {
             newList.add(0);
             }
             projectToList.put(pi,newList);
@@ -37,9 +37,9 @@ public class Company extends Organization{
    }
    @Override
    public int getProjectBudget(ProjectInterface pi){
-    if(getAllProjects().contains(pi)==true){
+    if(super.getAllProjects().contains(pi)==true){
         int sum = pi.getTotalBudget();
-        for(int i=0;i<Constants.PROJECT_DURATION_IN_YEARS;i++){
+        for(int i=0;i<=(pi.getEndingYear()-pi.getStartingYear());i++){
             sum+=projectToList.get(pi).get(i);
         }
         return sum;
@@ -50,10 +50,10 @@ public class Company extends Organization{
    @Override
    public int getBudgetForAllProjects(){
         int sum=0;
-        for(ProjectInterface project : getAllProjects()){
+        for(ProjectInterface project : super.getAllProjects()){
             sum+=project.getTotalBudget();
             if(projectToList.containsKey(project)==true){
-              for(int i=0;i<Constants.PROJECT_DURATION_IN_YEARS;i++){
+              for(int i=0;i<=(project.getEndingYear()-project.getStartingYear());i++){
                     sum+=projectToList.get(project).get(i);
                 }  
             }

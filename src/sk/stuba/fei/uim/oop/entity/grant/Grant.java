@@ -62,6 +62,7 @@ public class Grant implements GrantInterface {
     }
     public boolean registerProject(ProjectInterface project){
         if(this.state==GrantState.STARTED){
+            if(project.getApplicant()!=null){
             if(project.getStartingYear()==this.year){
                 if(!project.getAllParticipants().isEmpty()){
                     this.projects.add(project);
@@ -69,6 +70,7 @@ public class Grant implements GrantInterface {
                 }
             }
         }
+    }
         return false;
     }
     public Set<ProjectInterface> getRegisteredProjects(){
@@ -78,12 +80,14 @@ public class Grant implements GrantInterface {
         return this.evaluated.get(project);
     }
     public void evaluateProjects(){
-        if(this.state == GrantState.STARTED){
+       if(this.state == GrantState.STARTED){
        this.state = GrantState.EVALUATING;
        Set<ProjectInterface> passed = new LinkedHashSet<>();
        Set<ProjectInterface> failed = new LinkedHashSet<>();
-        HashSet<GrantInterface> allGrants = new HashSet<>(); 
-       allGrants.addAll(this.agency.getAllGrants());
+       HashSet<GrantInterface> allGrants = new HashSet<>(); 
+       
+        allGrants.addAll(this.agency.getAllGrants());
+       
        HashSet<GrantInterface> runningGrants = new HashSet<>();
        for(GrantInterface grant : allGrants){
             if(grant.getState()==GrantState.CLOSED){
@@ -140,9 +144,7 @@ public class Grant implements GrantInterface {
         }
        }
        for(ProjectInterface project : failed){
-            for(int i=0;i<Constants.PROJECT_DURATION_IN_YEARS;i++){
                 evaluated.put(project,0);
-            }
         }
         int numberOfFunded;
         int moneyPerFunded;

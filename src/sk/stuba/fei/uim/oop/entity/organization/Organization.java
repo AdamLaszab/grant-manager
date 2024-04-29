@@ -68,11 +68,11 @@ public abstract class Organization implements OrganizationInterface {
         if (this == obj) return true;
         if (obj == null || getClass().getSuperclass() != obj.getClass().getSuperclass()) return false;
         Organization organization = (Organization) obj;
-        return Objects.equals(name, organization.name);
+        return Objects.equals(this.name, organization.name);
     }
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(this.name);
     }
 }
     
